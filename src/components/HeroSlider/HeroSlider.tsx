@@ -1,21 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import {
-  EffectCoverflow,
-  Pagination,
   Autoplay,
+  EffectCoverflow,
   Navigation,
+  Pagination,
 } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
-// Define the type for our data
 interface Hero {
   id: number;
   name: string;
@@ -46,17 +45,16 @@ const heros: Hero[] = [
 
 export default function HeroSlider() {
   return (
-    <div className="w-full py-12 bg-gray-900">
+    <div className="mx-auto my-2">
       <Swiper
+        loop={true}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        navigation={true}
         effect={'coverflow'}
         grabCursor={true}
         centeredSlides={true}
         slidesPerView={'auto'}
-        loop={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -64,22 +62,20 @@ export default function HeroSlider() {
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={{ clickable: true }}
-        navigation={true}
         modules={[EffectCoverflow, Pagination, Autoplay, Navigation]}
-        className="max-w-5xl"
+        className=""
       >
-        {heros.map((hero) => (
-          <SwiperSlide key={hero.id} className="">
-            <div className="relative w-7xl h-120 rounded-2xl overflow-hidden border-2 border-blue-500/30 group">
+        {heros.map((item) => (
+          <SwiperSlide key={item.id} className="flex mx-auto">
+            <div className="relative w-7xl h-120 max-sm:w-full max-sm:h-80 overflow-hidden border mx-auto rounded-md">
               <Image
-                src={hero.image}
-                alt={hero.name}
+                src={item.image}
+                alt={item.name}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                className="object-fill"
               />
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
-                <h3 className="text-white text-2xl font-bold">{hero.name}</h3>
+                <h3 className="text-white text-2xl font-bold">{item.name}</h3>
               </div>
             </div>
           </SwiperSlide>

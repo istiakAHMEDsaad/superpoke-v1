@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { ModeToggle } from '@/components/DarkModeToggle/mode-toggle';
 import { useState, useEffect } from 'react';
 import { FolderHeart } from 'lucide-react';
 
@@ -71,17 +71,17 @@ const Navbar = () => {
             <path
               d="M10.836 10.615 15 14.695"
               stroke="#7A7B7D"
-              stroke-width="1.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
-              clip-rule="evenodd"
+              clipRule="evenodd"
               d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783"
               stroke="#7A7B7D"
-              stroke-width="1.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>
@@ -89,6 +89,10 @@ const Navbar = () => {
         {/* bookmark icon */}
         <div className="relative cursor-pointer">
           <FolderHeart />
+        </div>
+
+        <div>
+          <ModeToggle />
         </div>
 
         <button className="cursor-pointer px-8 py-2 bg-neutral-950 hover:bg-neutral-900 dark:bg-gray-100 dark:hover:bg-gray-200 transition text-white dark:text-neutral-800 rounded-full">
@@ -143,8 +147,13 @@ const Navbar = () => {
               />
             </div>
 
-            <div className="relative cursor-pointer">
-              <FolderHeart />
+            <div className="flex items-center gap-2">
+              <div className="relative cursor-pointer">
+                <FolderHeart />
+              </div>
+              <div>
+                <ModeToggle />
+              </div>
             </div>
 
             {/* Links */}
