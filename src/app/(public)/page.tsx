@@ -1,4 +1,5 @@
 import HeroSlider from '@/components/HeroSlider/HeroSlider';
+import LatestNews from '@/components/HomeConents/LatestNews';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ const page = () => {
   return (
     <div>
       <HeroSlider />
+      <LatestNews/>
     </div>
   );
 };
