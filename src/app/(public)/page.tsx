@@ -1,7 +1,7 @@
 import HeroSlider from '@/components/HeroSlider/HeroSlider';
 import HeroMarquee from '@/components/HomeConents/HeroMarquee';
 import LatestNews from '@/components/HomeConents/LatestNews';
-import PublicPoke from '@/components/PublicViewData/PublicPoke';
+import PublicPoke from '@/components/HomeConents/PublicPoke';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

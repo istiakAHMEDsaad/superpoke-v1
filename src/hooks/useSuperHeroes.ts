@@ -5,7 +5,10 @@ export const useSuperHeroes = (limit = 6) => {
   return useQuery({
     queryKey: ['superheroes'],
     queryFn: fetchSuperHeros,
-    select: (data) => data.slice(0, limit),
+    // first 6 data:
+    // select: (data) => data.slice(0, limit),
+    // random 6 data:
+    select: (data) => [...data].sort(() => 0.5 - Math.random()).slice(0, limit),
     staleTime: 1000 * 60 * 30,
   });
 };
