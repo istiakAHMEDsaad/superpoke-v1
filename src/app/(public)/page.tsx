@@ -1,4 +1,5 @@
 import HeroSlider from '@/components/HeroSlider/HeroSlider';
+import HeroMarquee from '@/components/HomeConents/HeroMarquee';
 import LatestNews from '@/components/HomeConents/LatestNews';
 import PublicPoke from '@/components/PublicViewData/PublicPoke';
 import type { Metadata } from 'next';
@@ -14,6 +15,7 @@ const page = () => {
     <div>
       <HeroSlider />
       <PublicPoke />
+      <HeroMarquee/>
       <LatestNews />
     </div>
   );
