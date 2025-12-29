@@ -1,5 +1,6 @@
 import HeroSlider from '@/components/HeroSlider/HeroSlider';
 import LatestNews from '@/components/HomeConents/LatestNews';
+import PublicPoke from '@/components/PublicViewData/PublicPoke';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,7 +13,8 @@ const page = () => {
   return (
     <div>
       <HeroSlider />
-      <LatestNews/>
+      <PublicPoke />
+      <LatestNews />
     </div>
   );
 };

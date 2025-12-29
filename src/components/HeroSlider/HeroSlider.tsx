@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import type { StaticImageData } from 'next/image';
 import {
   Autoplay,
   EffectCoverflow,
@@ -8,6 +9,12 @@ import {
   Pagination,
 } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import dcImgOne from '@/assets/superheros/dc-1.jpg';
+import dcImgTwo from '@/assets/superheros/dc-2.jpg';
+import mcImgOne from '@/assets/superheros/marvel-1.jpg';
+import mcImgTwo from '@/assets/superheros/marvel-2.jpg';
+import pkImgOne from '@/assets/pokemon/poke-1.webp';
+import pkImgTwo from '@/assets/pokemon/poke-2.webp';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -18,29 +25,40 @@ import 'swiper/css/pagination';
 interface Hero {
   id: number;
   name: string;
-  image: string;
+  image: StaticImageData | string;
 }
 
 const heros: Hero[] = [
   {
     id: 1,
-    name: 'Batman',
-    image:
-      'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/70-batman.jpg',
+    name: 'DC Superheros',
+    image: dcImgOne,
   },
   {
     id: 2,
-    name: 'Spider-Man',
-    image:
-      'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/620-spider-man.jpg',
+    name: 'Classic Superheros',
+    image: dcImgTwo,
   },
   {
     id: 3,
-    name: 'Superman',
-    image:
-      'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/md/644-superman.jpg',
+    name: 'Marvel Superheros',
+    image: mcImgOne,
   },
-  // Add more mock data or map from your API
+  {
+    id: 4,
+    name: 'Classic Superheros',
+    image: mcImgTwo,
+  },
+  {
+    id: 5,
+    name: 'Pokemon',
+    image: pkImgOne,
+  },
+  {
+    id: 6,
+    name: 'Pokemon',
+    image: pkImgTwo,
+  },
 ];
 
 export default function HeroSlider() {
@@ -72,7 +90,7 @@ export default function HeroSlider() {
                 src={item.image}
                 alt={item.name}
                 fill
-                className="object-fill"
+                className="object-cover object-top"
               />
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
                 <h3 className="text-white text-2xl font-bold">{item.name}</h3>
