@@ -15,7 +15,7 @@ const page = () => {
     <div>
       <HeroSlider />
       <PublicPoke />
-      <HeroMarquee/>
+      <HeroMarquee />
       <LatestNews />
     </div>
   );

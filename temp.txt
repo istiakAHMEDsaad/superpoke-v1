@@ -88,3 +88,8 @@ export default function HeroSlider() {
     </div>
   );
 }
+
+
+Zabbar Miya
+zabbar@demo.com
+zabbar1234

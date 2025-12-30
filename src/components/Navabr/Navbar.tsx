@@ -95,9 +95,12 @@ const Navbar = () => {
           <ModeToggle />
         </div>
 
-        <button className="cursor-pointer px-8 py-2 bg-neutral-950 hover:bg-neutral-900 dark:bg-gray-100 dark:hover:bg-gray-200 transition text-white dark:text-neutral-800 rounded-full">
+        <Link
+          href="/login"
+          className="cursor-pointer px-8 py-2 bg-neutral-950 hover:bg-neutral-900 dark:bg-gray-100 dark:hover:bg-gray-200 transition text-white dark:text-neutral-800 rounded-full"
+        >
           Login
-        </button>
+        </Link>
       </div>
 
       <button
