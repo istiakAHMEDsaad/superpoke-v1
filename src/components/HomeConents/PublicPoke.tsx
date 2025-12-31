@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Reveal from '../animations/Reveal';
 import SpinnerL from '../LoadingSpinner/SpinnerL';
+import { Button } from '../ui/button';
+import { Search } from 'lucide-react';
+import Link from 'next/link';
 
 const PublicPoke = () => {
   const { data, isLoading, error } = usePokemonHome();
@@ -54,6 +57,15 @@ const PublicPoke = () => {
           );
         })}
       </section>
+
+      <div className="my-5 flex items-center justify-center">
+        <Link href="/explore">
+          <Button className="cursor-pointer">
+            <Search />
+            Explore More...
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

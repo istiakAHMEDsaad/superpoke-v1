@@ -1,15 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import SpinnerL from '@/components/LoadingSpinner/SpinnerL';
+import { PokemonCard } from '@/components/Pokemon/PokemonCard';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Pagination,
   PaginationContent,
@@ -18,11 +11,19 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePokemonExplore } from '@/hooks/usePokemonExplore';
-import { getPokemonIdFromUrl } from '@/utils/getPokemonIdFromUrl';
 import type { PokemonListItem } from '@/types/pokemon';
-import SpinnerL from '@/components/LoadingSpinner/SpinnerL';
-import { PokemonCard } from '@/components/Pokemon/PokemonCard';
+import { getPokemonIdFromUrl } from '@/utils/getPokemonIdFromUrl';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useMemo, useState } from 'react';
 
 type PokemonItem = {
   id: number;
@@ -35,11 +36,23 @@ const ITEMS_PER_PAGE = 24;
 const ExploreUI = () => {
   const { data, isLoading, isError } = usePokemonExplore();
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  //  page from URL
+  const page = Number(searchParams.get('page')) || 1;
+
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
 
-  // 1️⃣ Map API response
+  // helper to update page in URL
+  const setPage = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', String(newPage));
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+  // 1. Map API response
   const pokemonData: PokemonItem[] = useMemo(() => {
     if (!data?.results) return [];
 
@@ -49,7 +62,7 @@ const ExploreUI = () => {
     });
   }, [data]);
 
-  // 2️⃣ Filter + sort
+  // 2. Filter + sort
   const filteredPokemon = useMemo(() => {
     let result = [...pokemonData];
 
@@ -78,7 +91,7 @@ const ExploreUI = () => {
     return result;
   }, [pokemonData, search, sort]);
 
-  // 3️⃣ Pagination slice
+  // 3️. Pagination slice
   const totalPages = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
 
   const paginatedPokemon = useMemo(() => {
@@ -154,7 +167,7 @@ const ExploreUI = () => {
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      onClick={() => setPage(Math.max(1, page - 1))}
                     />
                   </PaginationItem>
 
@@ -166,9 +179,7 @@ const ExploreUI = () => {
 
                   <PaginationItem>
                     <PaginationNext
-                      onClick={() =>
-                        setPage((p) => Math.min(totalPages, p + 1))
-                      }
+                      onClick={() => setPage(Math.min(totalPages, page + 1))}
                     />
                   </PaginationItem>
                 </PaginationContent>

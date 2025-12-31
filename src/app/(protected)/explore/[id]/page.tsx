@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
+import BackButton from '@/components/Button/BackButton';
 
 const typeColors: Record<string, string> = {
   fire: 'bg-orange-500',
@@ -35,6 +36,7 @@ const PokemonDetails = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <BackButton/>
       {/* Hero Section */}
       <div
         className={`relative overflow-hidden rounded-3xl p-8 text-white ${themeColor} shadow-xl`}
