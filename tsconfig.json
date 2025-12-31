@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "types": ["node"],
-    "ignoreDeprecations": "6.0",
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": [
-        "*"
-      ]
-    },
+    // "types": ["node"],
+    // "ignoreDeprecations": "6.0",
+    // "baseUrl": "./src",
+    // "paths": {
+    //   "@/*": [
+    //     "*"
+    //   ]
+    // },
     "target": "ES2017",
     "lib": [
       "dom",
