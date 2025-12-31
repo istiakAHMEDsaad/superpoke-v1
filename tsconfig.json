@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["node"],
     "ignoreDeprecations": "6.0",
     "baseUrl": "./src",
     "paths": {
@@ -38,7 +39,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "global.d.ts"
+    "global.d.ts",
   ],
   "exclude": [
     "node_modules"
