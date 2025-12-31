@@ -1,11 +1,6 @@
 import { fetchPokemonDetails } from '@/services/pokemon.service';
 import { PokemonData } from '@/types/pokemondata';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
@@ -33,19 +28,12 @@ const typeColors: Record<string, string> = {
   steel: 'bg-slate-500',
 };
 
-const PokemonDetails = async ({
-  params,
-}: {
-  params: { id: string };
-}) => {
-  const data: PokemonData = await fetchPokemonDetails(
-    Number(params.id)
-  );
+const PokemonDetails = async ({ params }: { params: { id: string } }) => {
+  const data: PokemonData = await fetchPokemonDetails(Number(params.id));
 
   const mainType = data.types[0]?.type.name ?? 'normal';
   const themeColor = typeColors[mainType] ?? 'bg-slate-500';
-  const image =
-    data.sprites.other['official-artwork'].front_default;
+  const image = data.sprites.other['official-artwork'].front_default;
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
@@ -100,30 +88,20 @@ const PokemonDetails = async ({
         {/* Physical Info */}
         <Card className="md:col-span-1 border-none shadow-md">
           <CardHeader>
-            <CardTitle className="text-lg">
-              Physical Info
-            </CardTitle>
+            <CardTitle className="text-lg">Physical Info</CardTitle>
           </CardHeader>
 
           <CardContent className="space-y-4">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                Height
-              </span>
-              <span className="font-semibold">
-                {data.height / 10} m
-              </span>
+              <span className="text-muted-foreground">Height</span>
+              <span className="font-semibold">{data.height / 10} m</span>
             </div>
 
             <Separator />
 
             <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                Weight
-              </span>
-              <span className="font-semibold">
-                {data.weight / 10} kg
-              </span>
+              <span className="text-muted-foreground">Weight</span>
+              <span className="font-semibold">{data.weight / 10} kg</span>
             </div>
 
             <Separator />
@@ -150,9 +128,7 @@ const PokemonDetails = async ({
         {/* Stats */}
         <Card className="md:col-span-2 border-none shadow-md">
           <CardHeader>
-            <CardTitle className="text-lg">
-              Base Stats
-            </CardTitle>
+            <CardTitle className="text-lg">Base Stats</CardTitle>
           </CardHeader>
 
           <CardContent className="space-y-6">
@@ -160,20 +136,12 @@ const PokemonDetails = async ({
               <div key={s.stat.name} className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="uppercase font-medium text-muted-foreground">
-                    {s.stat.name.replace(
-                      'special-',
-                      'Sp. '
-                    )}
+                    {s.stat.name.replace('special-', 'Sp. ')}
                   </span>
-                  <span className="font-bold">
-                    {s.base_stat}
-                  </span>
+                  <span className="font-bold">{s.base_stat}</span>
                 </div>
 
-                <Progress
-                  value={(s.base_stat / 255) * 100}
-                  className="h-2"
-                />
+                <Progress value={(s.base_stat / 255) * 100} className="h-2" />
               </div>
             ))}
           </CardContent>
