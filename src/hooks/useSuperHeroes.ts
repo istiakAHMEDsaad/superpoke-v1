@@ -1,14 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchSuperHeros } from '@/services/superhero.service';
+import type { Superhero } from '@/types/superhero';
 
-export const useSuperHeroes = (limit = 6) => {
-  return useQuery({
+export const useSuperHeroes = () => {
+  return useQuery<Superhero[]>({
     queryKey: ['superheroes'],
     queryFn: fetchSuperHeros,
-    // first 6 data:
-    // select: (data) => data.slice(0, limit),
-    // random 6 data:
-    select: (data) => [...data].sort(() => 0.5 - Math.random()).slice(0, limit),
-    staleTime: 1000 * 60 * 30,
+    staleTime: 1000 * 60 * 60,
   });
 };

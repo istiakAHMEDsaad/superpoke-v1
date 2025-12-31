@@ -1,13 +1,13 @@
 'use client';
 
 import Marquee from 'react-fast-marquee';
-import { useSuperHeroes } from '@/hooks/useSuperHeroes';
+import { useSuperHeroesRandom } from '@/hooks/useSuperHeroesRandom';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import SpinnerL from '../LoadingSpinner/SpinnerL';
 
 const HeroMarquee = () => {
-  const { data, isLoading, error } = useSuperHeroes(6);
+  const { data, isLoading, error } = useSuperHeroesRandom(6);
 
   if (isLoading)
     return (
