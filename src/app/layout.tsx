@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import Navbar from '@/components/Navabr/Navbar';
 import Footers from '@/components/Footers/Footers';
 import Providers from './providers';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,16 +33,18 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            {children}
-            <Footers />
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Navbar />
+              {children}
+              <Footers />
+            </ThemeProvider>
+          </AuthProvider>
         </Providers>
       </body>
     </html>

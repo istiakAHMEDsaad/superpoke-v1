@@ -1,47 +1,51 @@
-import NextAuth from 'next-auth';
+import NextAuth, { type NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 import { connectDB } from '@/lib/db';
 import { User } from '@/models/User';
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
 
   providers: [
-    // Google Login
+    // 🔐 Google Login
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
 
-    // Email & Password
+    // 🔐 Email & Password
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { type: 'email' },
-        password: { type: 'password' },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
 
       async authorize(credentials) {
         await connectDB();
 
-        const user = await User.findOne({ email: credentials?.email });
+        if (!credentials?.email || !credentials.password) {
+          throw new Error('Missing credentials');
+        }
+
+        const user = await User.findOne({ email: credentials.email });
         if (!user || !user.password) {
           throw new Error('Invalid credentials');
         }
 
         const isValid = await bcrypt.compare(
-          credentials!.password,
+          credentials.password,
           user.password
         );
 
         if (!isValid) throw new Error('Invalid credentials');
 
         return {
-          id: user._id,
+          id: user._id.toString(),
           email: user.email,
           name: user.name,
           image: user.image,
@@ -51,7 +55,6 @@ const handler = NextAuth({
   ],
 
   callbacks: {
-    // Save user to DB on Google login
     async signIn({ user, account }) {
       await connectDB();
 
@@ -79,7 +82,7 @@ const handler = NextAuth({
     },
 
     async session({ session, token }) {
-      if (token?.id) {
+      if (token?.id && session.user) {
         session.user.id = token.id as string;
       }
       return session;
@@ -89,6 +92,8 @@ const handler = NextAuth({
   pages: {
     signIn: '/login',
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
