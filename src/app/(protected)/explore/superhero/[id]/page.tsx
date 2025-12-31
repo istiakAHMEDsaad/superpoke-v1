@@ -1,5 +1,6 @@
 import { fetchSuperheroById } from '@/services/fetchSuperheroById';
 import { Superhero } from '@/types/superhero';
+import { ReactNode } from 'react';
 import Image from 'next/image';
 import BackButton from '@/components/Button/BackButton';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,7 +8,15 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Shield, Zap, Target, Brain, Dumbbell, Swords } from 'lucide-react';
 
-const statIcons: Record<string, any> = {
+type PowerStat =
+  | 'intelligence'
+  | 'strength'
+  | 'speed'
+  | 'durability'
+  | 'power'
+  | 'combat';
+
+const statIcons: Record<PowerStat, ReactNode> = {
   intelligence: <Brain className="w-4 h-4 text-blue-400" />,
   strength: <Dumbbell className="w-4 h-4 text-red-400" />,
   speed: <Zap className="w-4 h-4 text-yellow-400" />,
@@ -89,19 +98,21 @@ const SuperheroDetailsPage = async ({ params }: { params: { id: string } }) => {
                 <Zap className="text-yellow-400" /> Tactical Power Levels
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
-                {Object.entries(hero.powerstats).map(([key, value]) => (
-                  <div key={key} className="space-y-3">
-                    <div className="flex justify-between items-center text-sm">
-                      <div className="flex items-center gap-2 capitalize text-slate-400 font-semibold">
-                        {statIcons[key]} {key}
+                {(Object.entries(hero.powerstats) as [PowerStat, number][]).map(
+                  ([key, value]) => (
+                    <div key={key} className="space-y-3">
+                      <div className="flex justify-between items-center text-sm">
+                        <div className="flex items-center gap-2 capitalize text-slate-400 font-semibold">
+                          {statIcons[key]} {key}
+                        </div>
+                        <span className="font-mono text-lg text-white">
+                          {value}
+                        </span>
                       </div>
-                      <span className="font-mono text-lg text-white">
-                        {value}
-                      </span>
+                      <Progress value={value} className="h-2 bg-slate-800" />
                     </div>
-                    <Progress value={value} className="h-2 bg-slate-800" />
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </CardContent>
           </Card>
