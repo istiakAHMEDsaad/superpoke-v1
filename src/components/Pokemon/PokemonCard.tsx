@@ -21,7 +21,7 @@ export const PokemonCard = ({ id, name }: Props) => {
   const image = data?.sprites.other['official-artwork'].front_default;
 
   return (
-    <Link href={`/pokemon/${id}`}>
+    <Link href={`/explore/${id}`}>
       <div className="rounded-lg border p-4 text-center hover:shadow-md transition cursor-pointer">
         <div className="relative h-32 mb-2">
           {image ? (

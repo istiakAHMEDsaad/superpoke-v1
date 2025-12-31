@@ -10,9 +10,6 @@ import Image from 'next/image';
 
 const Navbar = () => {
   const { data: session, status } = useSession();
-
-  console.log(session);
-  console.log(status);
   const [open, setOpen] = useState(false);
 
   interface Navlink {
