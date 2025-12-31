@@ -10,26 +10,55 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { mockPokemon, PokemonItem } from '@/data/mockPokemon';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import { usePokemonExplore } from '@/hooks/usePokemonExplore';
+import { getPokemonIdFromUrl } from '@/utils/getPokemonIdFromUrl';
+import type { PokemonListItem } from '@/types/pokemon';
+import SpinnerL from '@/components/LoadingSpinner/SpinnerL';
+import { PokemonCard } from '@/components/Pokemon/PokemonCard';
 
-const Explore = () => {
-  // search text
+type PokemonItem = {
+  id: number;
+  name: string;
+  power: number;
+};
+
+const ITEMS_PER_PAGE = 24;
+
+const ExploreUI = () => {
+  const { data, isLoading, isError } = usePokemonExplore();
+
   const [search, setSearch] = useState('');
-  // sort option
   const [sort, setSort] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
-  // DERIVED STATE (this is the key)
+  // 1️⃣ Map API response
+  const pokemonData: PokemonItem[] = useMemo(() => {
+    if (!data?.results) return [];
+
+    return data.results.map((p: PokemonListItem) => {
+      const id = getPokemonIdFromUrl(p.url);
+      return { id, name: p.name, power: id * 2 };
+    });
+  }, [data]);
+
+  // 2️⃣ Filter + sort
   const filteredPokemon = useMemo(() => {
-    let result: PokemonItem[] = [...mockPokemon];
+    let result = [...pokemonData];
 
-    // Search by name
     if (search.trim()) {
       result = result.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    // Sort logic
     if (sort === 'name-asc') {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -47,10 +76,18 @@ const Explore = () => {
     }
 
     return result;
-  }, [search, sort]);
+  }, [pokemonData, search, sort]);
+
+  // 3️⃣ Pagination slice
+  const totalPages = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
+
+  const paginatedPokemon = useMemo(() => {
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    return filteredPokemon.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredPokemon, page]);
 
   return (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 py-10">
+    <div className="relative px-6 md:px-16 lg:px-24 xl:px-32 py-10">
       <h1 className="text-3xl font-semibold mb-6">Explore</h1>
 
       <Tabs defaultValue="pokemon">
@@ -61,16 +98,24 @@ const Explore = () => {
 
         {/* ================== POKEMON TAB ================== */}
         <TabsContent value="pokemon">
-          {/* Filter bar */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
+          {/* Filters */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center mb-6">
             <Input
               placeholder="Search Pokémon by name..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               className="sm:max-w-sm"
             />
 
-            <Select onValueChange={setSort}>
+            <Select
+              onValueChange={(v) => {
+                setSort(v);
+                setPage(1);
+              }}
+            >
               <SelectTrigger className="sm:w-52">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
@@ -83,26 +128,53 @@ const Explore = () => {
             </Select>
           </div>
 
-          {/* Results */}
-          <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {filteredPokemon.length === 0 ? (
-              <p className="text-muted-foreground col-span-full">
-                No Pokémon found
-              </p>
-            ) : (
-              filteredPokemon.map((pokemon) => (
-                <div
-                  key={pokemon.id}
-                  className="rounded-lg border p-4 text-center"
-                >
-                  <p className="capitalize font-medium">{pokemon.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Power: {pokemon.power}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
+          {/* Grid */}
+          {isLoading ? (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <SpinnerL />
+            </div>
+          ) : isError ? (
+            <p>Error loading Pokémon</p>
+          ) : filteredPokemon.length === 0 ? (
+            <p className="text-muted-foreground">No Pokémon found</p>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {paginatedPokemon.map((pokemon) => (
+                  <PokemonCard
+                    key={pokemon.id}
+                    id={pokemon.id}
+                    name={pokemon.name}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              <Pagination className="mt-8">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    />
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <PaginationLink>
+                      {page} / {totalPages}
+                    </PaginationLink>
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </>
+          )}
         </TabsContent>
 
         {/* ================== SUPERHERO TAB ================== */}
@@ -114,6 +186,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
-
-// ExploreUI
+export default ExploreUI;

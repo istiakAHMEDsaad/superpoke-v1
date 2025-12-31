@@ -1,6 +1,6 @@
 'use client';
 
-import { usePokemonList } from '@/hooks/usePokemonList';
+import { usePokemonHome } from '@/hooks/usePokemonHome';
 import { getPokemonIdFromUrl } from '@/utils/getPokemonId';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -8,11 +8,11 @@ import Reveal from '../animations/Reveal';
 import SpinnerL from '../LoadingSpinner/SpinnerL';
 
 const PublicPoke = () => {
-  const { data, isLoading, error } = usePokemonList(6);
+  const { data, isLoading, error } = usePokemonHome();
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center my-60">
+      <div className="h-screen flex flex-col items-center justify-center">
         <SpinnerL />
       </div>
     );
