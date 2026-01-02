@@ -37,9 +37,9 @@ const PokemonDetails = async ({ params }: { params: { id: string } }) => {
   const image = data.sprites.other['official-artwork'].front_default;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div className="relative max-w-4xl mx-auto p-6 space-y-8">
       <BackButton />
-      <div className="absolute top-4 right-4 z-20">
+      <div className="fixed -bottom-3 right-8 z-20">
         <BookmarkButton
           itemId={data.id}
           itemType="pokemon"

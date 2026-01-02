@@ -4,17 +4,21 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { connectDB } from '@/lib/db';
 import { Bookmark } from '@/models/Bookmark';
 
-export async function GET() {
+export async function DELETE(
+  _: Request,
+  { params }: { params: { id: string } }
+) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json([], { status: 200 });
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   await connectDB();
 
-  const bookmarks = await Bookmark.find({
+  await Bookmark.findOneAndDelete({
+    _id: params.id,
     userId: session.user.id,
-  }).sort({ createdAt: -1 });
+  });
 
-  return NextResponse.json(bookmarks);
+  return NextResponse.json({ success: true });
 }

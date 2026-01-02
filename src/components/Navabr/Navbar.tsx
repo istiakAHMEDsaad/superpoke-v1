@@ -32,7 +32,7 @@ const Navbar = () => {
     };
   }, [open]);
 
-  const { data: bookmarks } = useBookmarks();
+  const { data: bookmarks } = useBookmarks(!!session);
 
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b light:border-gray-300 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-950 relative transition-all">

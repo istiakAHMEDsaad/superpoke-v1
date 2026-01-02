@@ -30,8 +30,8 @@ const SuperheroDetailsPage = async ({ params }: { params: { id: string } }) => {
   const hero = await fetchSuperheroById(Number(params.id));
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-12">
-      <div className="absolute top-4 right-4 z-20">
+    <div className="min-h-screen bg-slate-950 text-slate-100 pb-12 relative">
+      <div className="fixed bottom-5 right-8 z-20">
         <BookmarkButton
           itemId={hero.id}
           itemType="superhero"

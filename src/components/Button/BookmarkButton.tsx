@@ -1,7 +1,9 @@
 'use client';
 
 import { Heart } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
+import { useBookmarks } from '@/hooks/useBookmarks';
 
 type Props = {
   itemId: number;
@@ -11,32 +13,50 @@ type Props = {
 };
 
 const BookmarkButton = ({ itemId, itemType, name, image }: Props) => {
-  const toggleBookmark = async () => {
-    await toast.promise(
-      fetch('/api/bookmark', {
+  const queryClient = useQueryClient();
+  const { data: bookmarks } = useBookmarks();
+
+  const isBookmarked = bookmarks?.some(
+    (b) => b.itemId === itemId && b.itemType === itemType
+  );
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/bookmarks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          itemId,
-          itemType,
-          name,
-          image,
-        }),
-      }),
-      {
-        loading: 'Updating bookmark...',
-        success: 'Bookmark updated',
-        error: 'Failed to update bookmark',
+        body: JSON.stringify({ itemId, itemType, name, image }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to bookmark');
       }
-    );
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
+    },
+  });
+
+  const handleBookmark = () => {
+    toast.promise(mutation.mutateAsync(), {
+      loading: 'Adding to bookmarks...',
+      success: 'Added to bookmarks ❤️',
+      error: 'Failed to bookmark ❌',
+    });
   };
 
   return (
     <button
-      onClick={toggleBookmark}
-      className="fixed bottom-6 right-6 z-50 rounded-full bg-red-500 p-4 text-white shadow-lg hover:scale-105 transition"
+      disabled={isBookmarked || mutation.isPending}
+      onClick={handleBookmark}
+      className="p-2 rounded-full bg-white/80 hover:bg-white shadow"
     >
-      <Heart />
+      <Heart
+        className={`w-6 h-6 transition-colors ${
+          isBookmarked ? 'fill-red-500 text-red-500' : 'text-gray-700'
+        }`}
+      />
     </button>
   );
 };

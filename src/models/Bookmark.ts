@@ -1,40 +1,30 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose from 'mongoose';
 
-export type BookmarkType = 'pokemon' | 'superhero';
-
-const BookmarkSchema = new Schema(
+const BookmarkSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
-      index: true,
     },
-
     itemId: {
       type: Number,
       required: true,
     },
-
     itemType: {
       type: String,
       enum: ['pokemon', 'superhero'],
       required: true,
     },
-
-    name: {
-      type: String,
-      required: true,
-    },
-
-    image: {
-      type: String,
-      required: true,
-    },
+    name: String,
+    image: String,
   },
   { timestamps: true }
 );
 
-// prevent duplicate bookmark
+// Prevent duplicate bookmarks
 BookmarkSchema.index({ userId: 1, itemId: 1, itemType: 1 }, { unique: true });
 
-export const Bookmark = models.Bookmark || model('Bookmark', BookmarkSchema);
+export const Bookmark =
+  mongoose.models.Bookmark ||
+  mongoose.model('Bookmark', BookmarkSchema);
