@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Shield, Zap, Target, Brain, Dumbbell, Swords } from 'lucide-react';
+import BookmarkButton from '@/components/Button/BookmarkButton';
 
 type PowerStat =
   | 'intelligence'
@@ -27,10 +28,17 @@ const statIcons: Record<PowerStat, ReactNode> = {
 
 const SuperheroDetailsPage = async ({ params }: { params: { id: string } }) => {
   const hero = await fetchSuperheroById(Number(params.id));
-  console.log(hero.images.lg);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 pb-12">
+      <div className="absolute top-4 right-4 z-20">
+        <BookmarkButton
+          itemId={hero.id}
+          itemType="superhero"
+          name={hero.name}
+          image={hero.images.lg}
+        />
+      </div>
       {/* Background Ambient Glow */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-900/20 blur-[120px] rounded-full" />

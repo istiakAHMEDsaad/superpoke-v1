@@ -6,6 +6,7 @@ import Navbar from '@/components/Navabr/Navbar';
 import Footers from '@/components/Footers/Footers';
 import Providers from './providers';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -41,6 +42,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Navbar />
+              <Toaster position='top-right' toastOptions={{ duration: 3000 }} />
               {children}
               <Footers />
             </ThemeProvider>

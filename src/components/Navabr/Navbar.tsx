@@ -7,6 +7,7 @@ import { FolderHeart } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { DropDownMenu } from './DropDownMenu';
 import { Menu } from 'lucide-react';
+import { useBookmarks } from '@/hooks/useBookmarks';
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -31,6 +32,8 @@ const Navbar = () => {
     };
   }, [open]);
 
+  const { data: bookmarks } = useBookmarks();
+
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b light:border-gray-300 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-950 relative transition-all">
       {/* Logo */}
@@ -52,7 +55,7 @@ const Navbar = () => {
         <Link href="/bookmark" className="relative cursor-pointer">
           <FolderHeart className="" />
           <button className="absolute -bottom-1 -right-1 text-xs text-white bg-red-500 w-4.5 h-4.5 rounded-full cursor-pointer">
-            3
+            {bookmarks?.length ?? 0}
           </button>
         </Link>
 
@@ -115,7 +118,7 @@ const Navbar = () => {
               <Link href="/bookmark" className="relative cursor-pointer">
                 <FolderHeart className="" />
                 <button className="absolute -bottom-1 -right-1 text-xs text-white bg-red-500 w-4.5 h-4.5 rounded-full cursor-pointer">
-                  3
+                  {bookmarks?.length ?? 0}
                 </button>
               </Link>
               <ModeToggle />
