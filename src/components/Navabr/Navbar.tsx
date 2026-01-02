@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { FolderHeart } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { DropDownMenu } from './DropDownMenu';
-import Image from 'next/image';
+import { Menu } from 'lucide-react';
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -49,7 +49,12 @@ const Navbar = () => {
         ))}
 
         {/* Bookmark */}
-        <FolderHeart className="cursor-pointer" />
+        <Link href="/bookmark" className="relative cursor-pointer">
+          <FolderHeart className="" />
+          <button className="absolute -bottom-1 -right-1 text-xs text-white bg-red-500 w-4.5 h-4.5 rounded-full cursor-pointer">
+            3
+          </button>
+        </Link>
 
         <ModeToggle />
 
@@ -76,7 +81,9 @@ const Navbar = () => {
         aria-label="Menu"
         className="sm:hidden"
       >
-        ☰
+        <Menu />
+
+        {/* ☰ */}
       </button>
 
       {/* Mobile Menu */}
@@ -103,6 +110,16 @@ const Navbar = () => {
                 {item.title}
               </Link>
             ))}
+
+            <div className="flex items-center gap-2">
+              <Link href="/bookmark" className="relative cursor-pointer">
+                <FolderHeart className="" />
+                <button className="absolute -bottom-1 -right-1 text-xs text-white bg-red-500 w-4.5 h-4.5 rounded-full cursor-pointer">
+                  3
+                </button>
+              </Link>
+              <ModeToggle />
+            </div>
 
             <div className="mt-auto">
               {!session ? (
