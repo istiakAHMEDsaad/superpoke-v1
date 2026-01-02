@@ -6,8 +6,10 @@ import { Bookmark } from '@/models/Bookmark';
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
@@ -17,7 +19,7 @@ export async function DELETE(
   await connectDB();
 
   await Bookmark.findOneAndDelete({
-    _id: params.id,
+    _id: id,
     userId: session.user.id,
   });
 
