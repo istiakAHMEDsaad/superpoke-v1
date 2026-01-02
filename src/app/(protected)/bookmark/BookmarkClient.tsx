@@ -75,7 +75,7 @@ const BookmarkClient = () => {
   if (bookmarks.length === 0) return <p>No bookmarks yet.</p>;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {bookmarks.map((b) => (
         <div
           key={b._id}
