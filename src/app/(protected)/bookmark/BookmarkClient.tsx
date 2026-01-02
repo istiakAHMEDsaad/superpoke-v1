@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Trash } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 type Bookmark = {
   _id: string;
@@ -14,18 +14,25 @@ type Bookmark = {
   image: string;
 };
 
-const BookmarkClient = ({ bookmarks }: { bookmarks: Bookmark[] }) => {
+const BookmarkClient = () => {
   const queryClient = useQueryClient();
+
+  // FETCH bookmarks
+  const { data: bookmarks = [], isLoading } = useQuery<Bookmark[]>({
+    queryKey: ['bookmarks'],
+    queryFn: async () => {
+      const res = await fetch('/api/bookmarks/user');
+      if (!res.ok) throw new Error('Failed to fetch bookmarks');
+      return res.json();
+    },
+  });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const res = await fetch(`/api/bookmarks/${id}`, {
         method: 'DELETE',
       });
-
-      if (!res.ok) {
-        throw new Error('Failed to delete bookmark');
-      }
+      if (!res.ok) throw new Error('Delete failed');
     },
 
     onSuccess: () => {
@@ -36,18 +43,17 @@ const BookmarkClient = ({ bookmarks }: { bookmarks: Bookmark[] }) => {
   const handleDelete = (id: string) => {
     toast((t) => (
       <div className="flex flex-col gap-3">
-        <p>Are you sure you want to remove this bookmark?</p>
+        <p>Remove this bookmark?</p>
 
         <div className="flex gap-3 justify-end">
           <button
             className="px-3 py-1 bg-red-600 text-white rounded"
             onClick={() => {
               toast.dismiss(t.id);
-
               toast.promise(deleteMutation.mutateAsync(id), {
-                loading: 'Removing bookmark...',
+                loading: 'Removing...',
                 success: 'Bookmark removed 🗑️',
-                error: 'Failed to remove bookmark',
+                error: 'Failed to remove',
               });
             }}
           >
@@ -65,9 +71,8 @@ const BookmarkClient = ({ bookmarks }: { bookmarks: Bookmark[] }) => {
     ));
   };
 
-  if (bookmarks.length === 0) {
-    return <p>No bookmarks yet.</p>;
-  }
+  if (isLoading) return <p>Loading bookmarks...</p>;
+  if (bookmarks.length === 0) return <p>No bookmarks yet.</p>;
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -76,7 +81,6 @@ const BookmarkClient = ({ bookmarks }: { bookmarks: Bookmark[] }) => {
           key={b._id}
           className="border rounded-lg p-3 hover:shadow-md transition relative"
         >
-          {/* CARD LINK */}
           <Link href={`/explore/${b.itemType}/${b.itemId}`}>
             <div className="relative h-60 w-full">
               <Image
@@ -89,11 +93,10 @@ const BookmarkClient = ({ bookmarks }: { bookmarks: Bookmark[] }) => {
             <p className="mt-2 font-medium capitalize">{b.name}</p>
           </Link>
 
-          {/* DELETE BUTTON */}
           <button
             onClick={() => handleDelete(b._id)}
             disabled={deleteMutation.isPending}
-            className="absolute top-2 right-2 p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition disabled:opacity-50"
+            className="absolute top-2 right-2 p-2 rounded-full bg-red-500 text-white hover:bg-red-600 disabled:opacity-50"
           >
             <Trash size={14} />
           </button>
