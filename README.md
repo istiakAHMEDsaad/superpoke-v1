@@ -1,38 +1,99 @@
-[Google Cloud OAuth](https://console.cloud.google.com/apis/credentials)
+# 🦸‍♂️ SuperPoke — Pokémon & Superhero Explorer
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+SuperPoke is a modern full-stack web application that allows users to explore **Pokémon** and **Superheroes**, view detailed stats, bookmark favorites, and manage their personal collection — all in a fast, secure, and responsive experience.
 
-## Getting Started
+Built with **Next.js App Router**, **TypeScript**, **MongoDB**, and modern UI/UX practices.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Live Demo
+
+🔗 **Live App:** [Visit](https://superpoke-v1.vercel.app/)
+
+---
+
+## ✨ Features
+
+### 🔍 Explore & Discover
+
+- Browse **Pokémon** and **Superheroes**
+- Search by name
+- Sort by name or power
+- Paginated results for smooth performance
+
+### ❤️ Bookmark System
+
+- Save Pokémon or Superheroes to bookmarks
+- Real-time bookmark count in Navbar
+- Delete with confirmation dialog
+- Instant UI updates without page refresh
+
+### 🔐 Authentication
+
+- Google OAuth login
+- Email & password authentication
+- Protected routes using NextAuth
+- Secure JWT session handling
+
+### 📊 Detailed Profiles
+
+- Pokémon stats, types, abilities & artwork
+- Superhero power stats, biography & appearance
+- Clean, animated detail pages
+
+### 🎨 Modern UI/UX
+
+- Responsive design (desktop & mobile)
+- Dark / Light mode
+- shadcn/ui components
+- Framer Motion animations
+
+---
+
+## 🧰 Tech Stack
+
+### Frontend
+
+- Next.js 14 (App Router)
+- TypeScript
+- React
+- Tailwind CSS
+- shadcn/ui
+- Framer Motion
+- TanStack Query
+
+### Backend
+
+- Next.js API Routes
+- MongoDB + Mongoose
+- NextAuth.js
+- JWT Authentication
+
+### APIs Used
+
+- PokéAPI — Pokémon data
+- Superhero API (Akabab)
+
+---
+
+Create a `.env` file
+
+```
+# api
+NEXT_PUBLIC_POKE_BASE_URL='***'
+NEXT_PUBLIC_SUPER_BASE_URL='***'
+
+# google oauth
+GOOGLE_CLIENT_ID=***
+GOOGLE_CLIENT_SECRET=***
+
+# NextAuth
+NEXTAUTH_SECRET=***
+NEXTAUTH_URL=***
+
+# mongodb
+MONGODB_URI=***
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Document:
+[Google Cloud OAuth](https://console.cloud.google.com/apis/credentials)
